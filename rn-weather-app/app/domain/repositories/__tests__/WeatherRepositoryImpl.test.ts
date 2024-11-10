@@ -9,7 +9,7 @@ describe('WeatherRepositoryImpl', () => {
     const mockWeather = new Weather({
       temperature: 20,
       condition: 'Sunny',
-      location: 'London'
+      location: 'Sandton'
     });
 
     const mockDataSource: WeatherDataSource = {
@@ -20,11 +20,11 @@ describe('WeatherRepositoryImpl', () => {
     const repository = new WeatherRepositoryImpl(mockDataSource);
 
     // Act
-    const result = await repository.getWeather('London');
+    const result = await repository.getWeather('Sandton');
 
     // Assert
     expect(result).toEqual(mockWeather);
-    expect(mockDataSource.getWeatherByCity).toHaveBeenCalledWith('London');
+    expect(mockDataSource.getWeatherByCity).toHaveBeenCalledWith('Sandton');
   });
 
   test('should throw error when data source fails', async () => {
@@ -37,7 +37,7 @@ describe('WeatherRepositoryImpl', () => {
     const repository = new WeatherRepositoryImpl(mockDataSource);
 
     // Act & Assert
-    await expect(repository.getWeather('London'))
+    await expect(repository.getWeather('Sandton'))
       .rejects
       .toThrow('Failed to fetch weather data: API Error');
   });
