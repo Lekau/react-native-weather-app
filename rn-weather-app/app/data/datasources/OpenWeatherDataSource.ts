@@ -45,6 +45,8 @@ export class OpenWeatherDataSource implements WeatherDataSource {
   private mapToWeather(data: WeatherModel): Weather {
     return new Weather({
       temperature: Math.round(data.main.temp),
+      minTemperature: Math.round(data.main.temp_min),
+      maxTemperature: Math.round(data.main.temp_max),
       condition: data.weather[0].main,
       location: data.name,
     });

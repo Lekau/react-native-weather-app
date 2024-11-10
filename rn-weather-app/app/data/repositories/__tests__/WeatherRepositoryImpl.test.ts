@@ -8,6 +8,8 @@ describe('WeatherRepositoryImpl', () => {
     // Arrange
     const mockWeather = new Weather({
       temperature: 20,
+      minTemperature: 18,
+      maxTemperature: 22,
       condition: 'Sunny',
       location: 'London'
     });

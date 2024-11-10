@@ -25,15 +25,26 @@ export default function HomeScreen() {
             <View style={styles.weatherContainer}>
               <Image 
                 source={theme.backgroundImage} 
-                style={styles.weatherImage}
-                resizeMode="cover"
+                style={styles.weatherIcon}
+                resizeMode="contain"
               />
               <Text style={[styles.location, { color: theme.textColor }]}>
                 {weather.location}
               </Text>
               <Text style={[styles.temperature, { color: theme.textColor }]}>
-                {weather.temperature}°
+                {weather.temperature}°C
               </Text>
+              <View style={styles.minMaxContainer}>
+                <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+                  Min: {weather.minTemperature}°C
+                </Text>
+                <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+                  Current: {weather.temperature}°C
+                </Text>
+                <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+                  Max: {weather.maxTemperature}°C
+                </Text>
+              </View>
               <Text style={[styles.condition, { color: theme.textColor }]}>
                 {weather.condition}
               </Text>
@@ -64,7 +75,7 @@ const styles = StyleSheet.create({
   weatherContainer: {
     alignItems: 'center',
   },
-  weatherImage: {
+  weatherIcon: {
     width: '100%',
     height: '70%',
     marginBottom: 20,
@@ -105,5 +116,18 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 10,
+  },
+  minMaxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+    marginBottom: 10,
+  },
+  minMaxTemp: {
+    fontSize: 18,
+    fontWeight: '500',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 }); 

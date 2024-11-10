@@ -81,4 +81,20 @@ describe('OpenWeatherDataSource', () => {
       .rejects
       .toThrow('Failed to fetch weather data: Network error');
   });
+
+  test('getWeatherByCity returns weather entity with correct temperatures', async () => {
+    
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockWeatherResponse)
+    });
+
+    const result = await dataSource.getWeatherByCity('Sandton');
+
+    expect(result.temperature).toBe(20);
+    expect(result.minTemperature).toBe(18);
+    expect(result.maxTemperature).toBe(22);
+    expect(result.condition).toBe('Clear');
+    expect(result.location).toBe('Sandton');
+  });
 }); 

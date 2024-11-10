@@ -19,16 +19,13 @@ describe('WeatherRepositoryImpl', () => {
 
     const repository = new WeatherRepositoryImpl(mockDataSource);
 
-    // Act
     const result = await repository.getWeather('Sandton');
 
-    // Assert
     expect(result).toEqual(mockWeather);
     expect(mockDataSource.getWeatherByCity).toHaveBeenCalledWith('Sandton');
   });
 
   test('should throw error when data source fails', async () => {
-    // Arrange
     const mockDataSource: WeatherDataSource = {
       getWeatherByCity: jest.fn().mockRejectedValue(new Error('API Error')),
       getWeatherByLocation: jest.fn()
