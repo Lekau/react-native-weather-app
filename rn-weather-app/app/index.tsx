@@ -3,19 +3,20 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useWeather } from './presentation/hooks/useWeather';
 
 export default function HomeScreen() {
-  const { weather, error, isLoading, getWeather } = useWeather();
+  const { weather, error, isLoading, theme, getWeather } = useWeather();
 
-  
   React.useEffect(() => {
-    getWeather('Sandton');
+    getWeather('Cape Town');
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       {isLoading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#000" />
-          <Text style={styles.loadingText}>Loading weather data...</Text>
+          <ActivityIndicator size="large" color={theme.textColor} />
+          <Text style={[styles.loadingText, { color: theme.textColor }]}>
+            Loading weather data...
+          </Text>
         </View>
       )}
       
@@ -25,9 +26,15 @@ export default function HomeScreen() {
 
       {weather && (
         <View style={styles.weatherContainer}>
-          <Text style={styles.location}>{weather.location}</Text>
-          <Text style={styles.temperature}>{weather.temperature}°C</Text>
-          <Text style={styles.condition}>{weather.condition}</Text>
+          <Text style={[styles.location, { color: theme.textColor }]}>
+            {weather.location}
+          </Text>
+          <Text style={[styles.temperature, { color: theme.textColor }]}>
+            {weather.temperature}°C
+          </Text>
+          <Text style={[styles.condition, { color: theme.textColor }]}>
+            {weather.condition}
+          </Text>
         </View>
       )}
     </View>
@@ -37,9 +44,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-    marginTop: 50,
     justifyContent: 'center',
   },
   loadingContainer: {
