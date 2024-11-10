@@ -1,4 +1,4 @@
-import { WeatherBackgrounds, WeatherCondition, WeatherTheme } from '../models/WeatherUIModel';
+import { WeatherThemeAssets, WeatherCondition, WeatherTheme } from '../models/WeatherUIModel';
 
 export class WeatherThemeService {
   private static readonly backgrounds: WeatherBackgrounds = {
@@ -8,24 +8,39 @@ export class WeatherThemeService {
     default: '#FFFFFF'
   };
 
-  private static readonly darkConditions: WeatherCondition[] = ['Clear', 'Rain', 'Clouds'];
+  private static readonly images: WeatherThemeAssets = {
+    Clear: require('../../../assets/images/forest_sunny.png'),
+    Clouds: require('../../../assets/images/forest_cloudy.png'),
+    Rain: require('../../../assets/images/forest_rainy.png'),
+    default: require('../../../assets/images/forest_sunny.png')
+  };
+
+  private static readonly darkConditions: WeatherCondition[] = ['Rain'];
 
   static getTheme(condition?: string): WeatherTheme {
-    const backgroundColor = this.getBackgroundColor(condition);
-    const textColor = this.getTextColor(condition);
-
+    const safeCondition = this.normalizeCondition(condition);
+    
     return {
-      backgroundColor,
-      textColor
+      backgroundColor: this.getBackgroundColor(safeCondition),
+      textColor: this.getTextColor(safeCondition),
+      backgroundImage: this.getWeatherImage(safeCondition)
     };
   }
 
-  private static getBackgroundColor(condition?: string): string {
-    if (!condition) return this.backgrounds.default;
-    return this.backgrounds[condition as WeatherCondition] || this.backgrounds.default;
+  private static normalizeCondition(condition?: string): WeatherCondition {
+    if (!condition) return 'default';
+    return (this.images.hasOwnProperty(condition) ? condition : 'default') as WeatherCondition;
   }
 
-  private static getTextColor(condition?: string): string {
-    return this.darkConditions.includes(condition as WeatherCondition) ? '#FFFFFF' : '#333333';
+  private static getBackgroundColor(condition: WeatherCondition): string {
+    return this.backgrounds[condition];
+  }
+
+  private static getTextColor(condition: WeatherCondition): string {
+    return this.darkConditions.includes(condition) ? '#FFFFFF' : '#333333';
+  }
+
+  private static getWeatherImage(condition: WeatherCondition): any {
+    return this.images[condition];
   }
 } 
