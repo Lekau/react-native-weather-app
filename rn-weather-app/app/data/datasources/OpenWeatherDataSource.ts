@@ -2,7 +2,7 @@ import { WeatherDataSource } from '../../domain/datasources/WeatherDataSource';
 import { Weather } from '../../domain/entities/Weather';
 import { Forecast, DayForecast } from '../../domain/entities/Forecast';
 import { format } from 'date-fns';
-import { ENV } from '../../core/config/env';
+import { config } from '../../core/config/config';
 
 interface OpenWeatherResponse {
   main: {
@@ -37,7 +37,7 @@ export class OpenWeatherDataSource implements WeatherDataSource {
   async getWeatherByCity(city: string): Promise<Weather> {
     try {
       const response = await fetch(
-        `${ENV.OPENWEATHER_BASE_URL}/weather?q=${city}&appid=${ENV.OPENWEATHER_API_KEY}&units=metric`
+        `${config.openWeather.baseUrl}/weather?q=${city}&appid=${config.openWeather.apiKey}&units=metric`
       );
       
       if (!response.ok) {
@@ -56,7 +56,7 @@ export class OpenWeatherDataSource implements WeatherDataSource {
   async getForecast(city: string): Promise<Forecast> {
     try {
       const response = await fetch(
-        `${ENV.OPENWEATHER_BASE_URL}/forecast?q=${city}&appid=${ENV.OPENWEATHER_API_KEY}&units=metric`
+        `${config.openWeather.baseUrl}/forecast?q=${city}&appid=${config.openWeather.apiKey}&units=metric`
       );
       
       if (!response.ok) {
