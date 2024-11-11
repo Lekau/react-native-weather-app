@@ -1,6 +1,7 @@
 import { describe, expect, test, jest, beforeEach } from '@jest/globals';
 import { OpenWeatherDataSource } from '../OpenWeatherDataSource';
-import { WeatherModel } from '../../models/WeatherModel';
+import { WeatherModel } from '../../../models/WeatherModel';
+import { format } from 'date-fns';
 
 describe('OpenWeatherDataSource', () => {
   let dataSource: OpenWeatherDataSource;
@@ -22,6 +23,26 @@ describe('OpenWeatherDataSource', () => {
     }],
     name: 'London',
     cod: 200
+  };
+
+  const mockForecastResponse = {
+    list: [
+      {
+        dt: Math.floor(Date.now() / 1000), 
+        dt_txt: format(new Date(), 'yyyy-MM-dd 12:00:00'),
+        main: { temp: 20 },
+        weather: [{ main: 'Clear' }]
+      },
+      {
+        dt: Math.floor(Date.now() / 1000) + 86400, 
+        dt_txt: format(new Date(Date.now() + 86400000), 'yyyy-MM-dd 12:00:00'),
+        main: { temp: 22 },
+        weather: [{ main: 'Clouds' }]
+      },
+    ],
+    city: {
+      name: 'Sandton'
+    }
   };
 
   beforeEach(() => {
@@ -96,5 +117,32 @@ describe('OpenWeatherDataSource', () => {
     expect(result.maxTemperature).toBe(22);
     expect(result.condition).toBe('Clear');
     expect(result.location).toBe('Sandton');
+  });
+
+  test('getForecast returns 5-day forecast', async () => {
+    
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockForecastResponse)
+    });
+
+
+    const result = await dataSource.getForecast('Sandton');
+
+    expect(result.days.length).toBeLessThanOrEqual(5);
+    expect(result.days[0].day).toBe('Today');
+    expect(result.days[1].day).toBe('Tomorrow');
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  test('getForecast handles API error', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      json: () => Promise.resolve({ message: 'City not found' })
+    });
+ 
+    await expect(dataSource.getForecast('NonExistentCity'))
+      .rejects
+      .toThrow('Failed to fetch forecast data: City not found');
   });
 }); 

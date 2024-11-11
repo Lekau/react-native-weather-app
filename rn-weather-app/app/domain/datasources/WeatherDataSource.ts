@@ -1,6 +1,7 @@
 import { Weather } from '../entities/Weather';
+import { Forecast } from '../entities/Forecast';
 
 export interface WeatherDataSource {
-  getWeatherByLocation(lat: number, lon: number): Promise<Weather>;
   getWeatherByCity(city: string): Promise<Weather>;
+  getForecast(city: string): Promise<Forecast>;
 } 
