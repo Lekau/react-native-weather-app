@@ -35,15 +35,30 @@ export default function HomeScreen() {
                 {weather.temperature}°C
               </Text>
               <View style={styles.minMaxContainer}>
+                <View style={styles.minMaxTempColumn}>
+                  <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+                   {weather.minTemperature}°
+                  </Text>
+                  <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+                     Min
+                  </Text>
+                </View>
+                <View style={styles.minMaxTempColumn}>
                 <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
-                  Min: {weather.minTemperature}°C
+                 {weather.temperature}°
                 </Text>
                 <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
-                  Current: {weather.temperature}°C
+                   Current
+                </Text>
+                </View>
+                <View style={styles.minMaxTempColumn}>
+                <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
+               {weather.maxTemperature}°
                 </Text>
                 <Text style={[styles.minMaxTemp, { color: theme.textColor }]}>
-                  Max: {weather.maxTemperature}°C
+                     Max
                 </Text>
+                </View>
               </View>
               <Text style={[styles.condition, { color: theme.textColor }]}>
                 {weather.condition}
@@ -61,7 +76,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.1)',
   },
   loadingContainer: {
     marginTop: 10,
@@ -77,8 +91,7 @@ const styles = StyleSheet.create({
   },
   weatherIcon: {
     width: '100%',
-    height: '70%',
-    marginBottom: 20,
+    height: '65%',
   },
   location: {
     fontSize: 32,
@@ -118,10 +131,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   minMaxContainer: {
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    paddingBottom: 10,
   },
   minMaxTemp: {
     fontSize: 18,
@@ -130,4 +147,8 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
+  minMaxTempColumn: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
 }); 
